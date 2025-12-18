@@ -1,0 +1,30 @@
+import pulp
+
+def answer():
+    model = pulp.LpProblem(name="Vertex Cover", sense=pulp.LpMinimize)
+
+    a= pulp.LpVariable(name="a", lowBound=0,upBound=1,cat='Integer')
+    b= pulp.LpVariable(name="b", lowBound=0,upBound=1,cat='Integer')
+    c= pulp.LpVariable(name="c", lowBound=0,upBound=1,cat='Integer')
+    d= pulp.LpVariable(name="d", lowBound=0,upBound=1,cat='Integer')
+    e= pulp.LpVariable(name="e", lowBound=0,upBound=1,cat='Integer')
+
+    model+= a+b+c+d+e
+    model+= (a+b>=1)
+    model+= (a+d>=1)
+    model+= (b+d>=1)
+    model+= (b+c>=1)
+    model+= (c+d>=1)
+    model+= (c+e>=1)
+
+    model.solve()
+    print(f"ステータス: {pulp.LpStatus[model.status]}")
+    print("--- 最適解 ---")
+    print(f"(a, b, c, d, e) = {int(pulp.value(a)), int(pulp.value(b)), int(pulp.value(c)), int(pulp.value(d)), int(pulp.value(e))}")
+
+    print("--------------------")
+    print(f"min数値: {int(pulp.value(model.objective))} ")
+    return
+
+
+answer()
